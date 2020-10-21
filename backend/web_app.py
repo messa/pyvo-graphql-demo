@@ -3,25 +3,41 @@
 from aiohttp.web import RouteTableDef, Response, Application, AppRunner, TCPSite
 from argparse import ArgumentParser
 import asyncio
-from graphql import GraphQLSchema, GraphQLObjectType, GraphQLField, GraphQLString
+from graphene import Schema, ObjectType, Field, List
+from graphene import Int, String, DateTime, Boolean
+from graphene.relay import Node, Connection, ConnectionField
 from graphql_server.aiohttp import GraphQLView
 from logging import getLogger
 
 
 logger = getLogger(__name__)
 
+# from graphql import GraphQLSchema, GraphQLObjectType, GraphQLField, GraphQLString
+#
+# schema = GraphQLSchema(
+#     query=GraphQLObjectType(
+#         name='RootQueryType',
+#         fields={
+#             'hello': GraphQLField(
+#                 GraphQLString,
+#                 resolve=lambda obj, info: 'world')
+#             }))
 
-schema = GraphQLSchema(
-    query=GraphQLObjectType(
-        name='RootQueryType',
-        fields={
-            'hello': GraphQLField(
-                GraphQLString,
-                resolve=lambda obj, info: 'world')
-            }))
+
+class Query (ObjectType):
+
+    node = Node.Field()
+    hello = Field(String)
+
+    async def resolve_hello(root, info):
+        await asyncio.sleep(0.5)
+        return 'world'
 
 
-routes = RouteTableDef()
+schema = Schema(query=Query).graphql_schema # "schema" must be graphql.GraphQLSchema, not graphene.Schema
+
+
+routes = RouteTableDef() # aiohttp handlers table
 
 
 @routes.get('/')
@@ -42,7 +58,7 @@ async def async_main(args):
     app = Application()
     app.add_routes(routes)
     # GraphQLView source: https://github.com/graphql-python/graphql-server/blob/master/graphql_server/aiohttp/graphqlview.py
-    GraphQLView.attach(app, schema=schema, route_path='/api/graphql', graphiql=True)
+    GraphQLView.attach(app, schema=schema, route_path='/api/graphql', graphiql=True, enable_async=True)
     runner = AppRunner(app)
     await runner.setup()
     try:
