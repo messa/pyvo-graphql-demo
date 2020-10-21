@@ -1,0 +1,4 @@
+aiohttp
+graphene>=3.0b5
+graphql-server
+jinja2
