@@ -15,17 +15,6 @@ from pathlib import Path
 
 logger = getLogger(__name__)
 
-# from graphql import GraphQLSchema, GraphQLObjectType, GraphQLField, GraphQLString
-#
-# schema = GraphQLSchema(
-#     query=GraphQLObjectType(
-#         name='RootQueryType',
-#         fields={
-#             'hello': GraphQLField(
-#                 GraphQLString,
-#                 resolve=lambda obj, info: 'world')
-#             }))
-
 
 notes_data = [
     {
@@ -83,7 +72,19 @@ class Query (ObjectType):
         return notes_data
 
 
-schema = Schema(query=Query).graphql_schema # "schema" must be graphql.GraphQLSchema, not graphene.Schema
+schema = Schema(query=Query).graphql_schema
+
+
+# from graphql import GraphQLSchema, GraphQLObjectType, GraphQLField, GraphQLString
+#
+# schema = GraphQLSchema(
+#     query=GraphQLObjectType(
+#         name='RootQueryType',
+#         fields={
+#             'hello': GraphQLField(
+#                 GraphQLString,
+#                 resolve=lambda obj, info: 'world')
+#             }))
 
 
 # print graphql schema to frontend/schema.graphql (needed by frontend Relay)
@@ -127,7 +128,9 @@ async def async_main(args):
 
 def setup_logging():
     from logging import DEBUG, basicConfig
-    basicConfig(format='%(asctime)s %(name)-15s %(levelname)5s: %(message)s', level=DEBUG)
+    basicConfig(
+        format='%(asctime)s %(name)-15s %(levelname)5s: %(message)s',
+        level=DEBUG)
 
 
 if __name__ == '__main__':
