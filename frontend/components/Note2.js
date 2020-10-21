@@ -11,11 +11,11 @@ function Note2({ note }) {
 }
 
 export default createFragmentContainer(Note2, {
-    note: graphql`
-      fragment Note2_note on Note {
-        id
-        created
-        text
-      }
-    `
-  })
+  note: graphql`
+    fragment Note2_note on Note {
+      id
+      created
+      text
+    }
+  `
+})
