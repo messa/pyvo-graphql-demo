@@ -68,16 +68,19 @@ class Query (ObjectType):
 
     node = Node.Field()
     hello = String()
+    upper = String(s=String())
     notes = ConnectionField(NoteConnection)
 
     async def resolve_hello(root, info):
-        await asyncio.sleep(0.5)
         return 'world'
+
+    async def resolve_upper(root, info, s):
+        await asyncio.sleep(1)
+        return s.upper()
 
     async def resolve_notes(root, info, **kwargs):
         logger.debug('resolve_notes kwargs: %r', kwargs)
         return notes_data
-
 
 
 schema = Schema(query=Query).graphql_schema # "schema" must be graphql.GraphQLSchema, not graphene.Schema

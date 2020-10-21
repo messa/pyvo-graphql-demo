@@ -4,6 +4,7 @@ type Query {
     id: ID!
   ): Node
   hello: String
+  upper(s: String = null): String
   notes(before: String = null, after: String = null, first: Int = null, last: Int = null): NoteConnection
 }
 
