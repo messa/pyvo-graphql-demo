@@ -3,6 +3,7 @@
 from aiohttp.web import RouteTableDef, Response, Application, AppRunner, TCPSite
 from argparse import ArgumentParser
 import asyncio
+from datetime import datetime
 from graphene import Schema, ObjectType, Field, List
 from graphene import Int, String, DateTime, Boolean
 from graphene.relay import Node, Connection, ConnectionField
@@ -24,14 +25,57 @@ logger = getLogger(__name__)
 #             }))
 
 
+notes_data = [
+    {
+        'id': 'n1',
+        'created': datetime(2020, 10, 20, 12, 0),
+        'text': 'První poznámka'
+    },
+    {
+        'id': 'n2',
+        'created': datetime(2020, 10, 21, 15, 30),
+        'text': 'Text druhé poznámky'
+    },
+]
+
+
+class Note (ObjectType):
+
+    class Meta:
+        interfaces = (Node, )
+
+    created = DateTime()
+    text = String()
+    wordCount = Int()
+
+    @classmethod
+    async def get_node(cls, info, id):
+        raise NotImplementedError()
+
+    async def resolve_wordCount(note, info):
+        return len(note['text'].split())
+
+
+class NoteConnection (Connection):
+
+    class Meta:
+        node = Note
+
+
 class Query (ObjectType):
 
     node = Node.Field()
-    hello = Field(String)
+    hello = String()
+    notes = ConnectionField(NoteConnection)
 
     async def resolve_hello(root, info):
         await asyncio.sleep(0.5)
         return 'world'
+
+    async def resolve_notes(root, info, **kwargs):
+        logger.debug('resolve_notes kwargs: %r', kwargs)
+        return notes_data
+
 
 
 schema = Schema(query=Query).graphql_schema # "schema" must be graphql.GraphQLSchema, not graphene.Schema
