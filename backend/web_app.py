@@ -4,11 +4,13 @@ from aiohttp.web import RouteTableDef, Response, Application, AppRunner, TCPSite
 from argparse import ArgumentParser
 import asyncio
 from datetime import datetime
+from graphql import print_schema
 from graphene import Schema, ObjectType, Field, List
 from graphene import Int, String, DateTime, Boolean
 from graphene.relay import Node, Connection, ConnectionField
 from graphql_server.aiohttp import GraphQLView
 from logging import getLogger
+from pathlib import Path
 
 
 logger = getLogger(__name__)
@@ -79,6 +81,11 @@ class Query (ObjectType):
 
 
 schema = Schema(query=Query).graphql_schema # "schema" must be graphql.GraphQLSchema, not graphene.Schema
+
+
+# print graphql schema to frontend/schema.graphql (needed by frontend Relay)
+schema_file = Path(__file__).parent / '../frontend/schema.graphql'
+schema_file.write_text(print_schema(schema))
 
 
 routes = RouteTableDef() # aiohttp handlers table
