@@ -17,9 +17,7 @@ export default withData(NotesPage, {
       notes {
         edges {
           node {
-            id
-            created
-            text
+            ...Note2_note
           }
         }
       }

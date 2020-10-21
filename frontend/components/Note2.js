@@ -1,4 +1,5 @@
 import React from 'react'
+import { createFragmentContainer, graphql } from 'react-relay'
 
 function Note2({ note }) {
   return (
@@ -9,4 +10,12 @@ function Note2({ note }) {
   )
 }
 
-export default Note2
+export default createFragmentContainer(Note2, {
+    note: graphql`
+      fragment Note2_note on Note {
+        id
+        created
+        text
+      }
+    `
+  })
