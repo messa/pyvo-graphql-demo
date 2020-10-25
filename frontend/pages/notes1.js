@@ -20,6 +20,7 @@ export default withData(NotesPage, {
             id
             created
             text
+            wordCount
           }
         }
       }

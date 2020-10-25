@@ -4,7 +4,7 @@ import { createFragmentContainer, graphql } from 'react-relay'
 function Note2({ note }) {
   return (
     <div>
-      <h2>Note <code>{note.created}</code></h2>
+      <h2>Note <code>{note.created}</code> ({note.wordCount})</h2>
       {note.text}
     </div>
   )
@@ -16,6 +16,7 @@ export default createFragmentContainer(Note2, {
       id
       created
       text
+      wordCount
     }
   `
 })
