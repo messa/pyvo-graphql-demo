@@ -6,7 +6,7 @@ import Note1 from '../components/Note1'
 function NotesPage({ notes }) {
   const noteNodes = notes.edges.map(edge => edge.node)
   return (
-    <Layout>
+    <Layout activeItem='notes1'>
       {noteNodes.map(note => <Note1 note={note} />)}
     </Layout>
   )

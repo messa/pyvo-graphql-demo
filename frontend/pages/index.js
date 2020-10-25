@@ -4,7 +4,7 @@ import Layout from '../components/Layout'
 
 function IndexPage({ hello }) {
   return (
-    <Layout>
+    <Layout activeItem='index'>
       <h1>Hello, {hello}!</h1>
     </Layout>
   )
