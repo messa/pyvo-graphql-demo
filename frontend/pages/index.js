@@ -1,11 +1,12 @@
 import React from 'react'
 import withData from '../util/withData'
+import Layout from '../components/Layout'
 
 function IndexPage({ hello }) {
   return (
-    <div>
+    <Layout>
       <h1>Hello, {hello}!</h1>
-    </div>
+    </Layout>
   )
 }
 
