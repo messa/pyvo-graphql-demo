@@ -1,5 +1,5 @@
-import { Environment, Network, RecordSource, Store } from 'relay-runtime'
 import fetch from 'isomorphic-unfetch'
+import { Environment, Network, RecordSource, Store } from 'relay-runtime'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 
 const relayEndpoint = process.browser ? '/api/graphql' : (process.env.RELAY_ENDPOINT || 'http://127.0.0.1:5000/api/graphql')
@@ -31,16 +31,15 @@ function getFetchQuery(req) {
       headers, // Add authentication and other headers here
       body: JSON.stringify({
         query: operation.text, // GraphQL text from input
-        variables
-      })
+        variables,
+      }),
     })
     if (r.status != 200) {
       const rawText = await r.text()
       const text = JSON.stringify(rawText).slice(0, 1000)
       throw new Error(`POST ${relayEndpoint} failed with status ${r.status}: ${text}`)
     }
-    const data = await r.json()
-    return data
+    return await r.json()
   }
 }
 
@@ -81,7 +80,6 @@ function setupSubscription(config, variables, cacheConfig, observer) {
     }
   }
 }
-
 
 let relayEnvironment = null
 

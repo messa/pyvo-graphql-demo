@@ -25,6 +25,10 @@ function MainMenu({ activeItem }) {
           padding-left: 0;
           margin-bottom: 2rem;
         }
+        ul li {
+          margin-top: 4px;
+          margin-bottom: 4px;
+        }
       `}</style>
     </ul>
   )
